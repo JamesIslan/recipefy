@@ -108,10 +108,23 @@
 
     .search-form {
       /* width: fit-content; */
+      position: relative;
       max-width: 64rem;
       margin: 0 auto;
       border: .2rem solid var(--color-primary-dark);
       border-radius: .3rem;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 10px 10px 20px -3px rgba(0, 0, 0, 0.15);
+    }
+
+    .search-form:focus-within {
+      border-color: var(--color-primary);
+      background-color: var(--color-white);
+      box-shadow: 15px 15px 20px -3px rgba(0, 0, 0, 0.2);
+
+      & .search-button {
+        color: var(--color-primary);
+      }
     }
 
     .search-input,
@@ -120,6 +133,17 @@
       background: none;
       outline: none;
       padding: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding-right: 3rem;
+    }
+
+    .search-button {
+      position: absolute;
+      top: 0;
+      right: 0;
     }
   </style>
 </head>
