@@ -153,6 +153,8 @@ a {
 }
 
 .container-recipes-grid .recipe-card {
+  display: flex;
+  flex-flow: column nowrap;
   transition: all 0.3s ease-in-out;
   max-width: 64rem;
 
@@ -196,6 +198,7 @@ a {
 }
 
 .recipe-content {
+  flex-grow: 1;
   padding: var(--spacing-gutter-small) var(--spacing-gutter-medium);
   font-weight: 600;
 }
