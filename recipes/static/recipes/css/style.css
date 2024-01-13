@@ -173,8 +173,13 @@ a {
 
 .recipe-metadata-wrapper {
   display: flex;
+  flex-flow: row wrap;
   gap: 1rem;
   padding: 0 var(--spacing-gutter-medium);
+}
+
+.recipe-info-title > i{
+  margin-right: 1rem;
 }
 
 .recipe-metadata {
