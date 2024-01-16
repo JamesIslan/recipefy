@@ -1,4 +1,5 @@
 # from django.http import HttpResponse  # Temporary
+from django.http import Http404
 from django.shortcuts import render
 
 from recipes.models import Category, Recipe
@@ -18,6 +19,8 @@ def home(request):
 def category(request, category_id):
     recipes = Recipe.objects.filter(category__id=category_id, is_published=True)
     print(recipes) # Remove later
+    if not recipes:
+        raise Http404('Lamentamos, esta página não pode ser encontrada 😓')
     return render(
         request, 
         'recipes/pages/category.html', 
@@ -25,7 +28,7 @@ def category(request, category_id):
             'recipes': recipes,
             'page_title': f'{recipes.first().category.name} - Category | '
         }
-        )
+    )
 
 def recipe(request, id):
     return render(
@@ -35,4 +38,4 @@ def recipe(request, id):
             'recipe': make_recipe(),
             'is_detail_page': True
         }
-        )
+    )
