@@ -17,9 +17,10 @@ six = "1.16.0"
 sqlparse = "0.4.4"
 tzdata = "2023.4"
 
-
 [tool.poetry.group.dev.dependencies]
 taskipy = "^1.12.2"
+pytest = "^7.4.4"
+pytest-django = "^4.7.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -28,3 +29,13 @@ build-backend = "poetry.core.masonry.api"
 [tool.taskipy.tasks]
 test = "python -m unittest tests/test_*.py"
 lint = "pylint tests taskipy"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "core.settings"
+python_files = [
+    "test.py", "test_*.py", "*_test.py", 
+    "tests.py", "tests_*.py", "*_tests.py", 
+    "testing/python/*.py"
+    ]
+addopts = ["--doctest-modules", "--strict-markers", "-rP"]
+markers = ["slow", "fast"]
