@@ -208,6 +208,17 @@ a {
   line-height: 1.5;
 }
 
+.recipe-preparation {
+  & h1, h2, h3, h4, h5, h6, p, pre {
+    margin: 2rem 0;
+  }
+  
+  & ol, ul {
+    margin: 2rem;
+    padding: 0 2rem;
+  }
+}
+
 .recipe-info-outer {
   display: flex;
   flex-flow: row wrap;
