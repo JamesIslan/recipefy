@@ -6,7 +6,10 @@ from utils.recipes.dummy import make_recipe
 
 
 def home(request):
-    recipes = Recipe.objects.filter(is_published=True).order_by('-id')
+    recipes = Recipe.objects.filter(
+            is_published=True,
+        ).order_by('-id')
+    
     return render(
         request, 
         'recipes/pages/home.html', 
@@ -22,6 +25,7 @@ def category(request, category_id):
             is_published=True,
         ).order_by('-id')
     )
+    
     return render(
         request, 
         'recipes/pages/category.html', 
@@ -31,11 +35,8 @@ def category(request, category_id):
         }
     )
 
-def recipe(request, id):
-    recipe = Recipe.objects.filter(
-        pk=id,
-        is_published=True,
-    ).order_by('-id').first()
+def recipe(request, id):    
+    recipe = get_object_or_404(Recipe, pk=id, is_published=True)
     
     return render(
         request, 
