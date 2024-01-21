@@ -5,12 +5,11 @@ from recipes.models import Category, Recipe, User
 
 class RecipeTestBase(TestCase):
     def setUp(self) -> None:
-        # self.make_recipe()
         return super().setUp()
-    
+
     def make_category(self, name='Categoria'):
         return Category.objects.create(name=name)
-    
+
     def make_author(
         self,
         first_name="Fulano",
@@ -26,9 +25,9 @@ class RecipeTestBase(TestCase):
             email=email,
             password=password,
         )
-    
+
     def make_recipe(
-        self, 
+        self,
         category_data={},
         author_data={},
         title="Uma receita genérica",
