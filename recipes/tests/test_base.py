@@ -33,10 +33,11 @@ class RecipeTestBase(TestCase):
             'preparation_steps': 'Aqui virá o passo a passo de preparo',
             'preparation_steps_is_html': False,
             'is_published': False,
-            **kwargs,
         }
+        arguments = default_values.copy()
+        arguments.update(kwargs)
         return Recipe.objects.create(
             category=self.make_category(**category_data),
             author=self.make_author(**author_data),
-            **default_values,
+            **arguments,
         )
