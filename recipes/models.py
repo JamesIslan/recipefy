@@ -1,3 +1,5 @@
+from email.policy import default
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -18,10 +20,10 @@ class Recipe(models.Model):
     servings = models.IntegerField()
     servings_unit = models.CharField(max_length=65)
     preparation_steps = models.TextField()
-    preparation_steps_is_html = models.BooleanField(default=False)
+    preparation_steps_is_html = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_published = models.BooleanField(default=False)
+    is_published = models.BooleanField()
     cover = models.ImageField(
         upload_to=r'recipes/covers/%Y/%m/%d/', blank=True, default=''
     )
@@ -29,3 +31,6 @@ class Recipe(models.Model):
         Category, on_delete=models.SET_NULL, null=True, blank=True, default=None
     )
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return str(self.title)

@@ -123,3 +123,9 @@ docstring-code-line-length = "dynamic"
 
 [tool.coverage.run]
 branch = true
+omit = [
+    "*/venv/*",
+    "*/*test*.py",
+    "manage.py",
+    "core/*.py"
+]

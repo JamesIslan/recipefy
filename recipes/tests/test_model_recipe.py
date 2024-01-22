@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from parameterized import parameterized
 
-from .test_recipe_base import RecipeTestBase
+from .test_base import RecipeTestBase
 
 
 class RecipeModelTest(RecipeTestBase):
@@ -28,3 +28,10 @@ class RecipeModelTest(RecipeTestBase):
 
     def test_recipe_is_published_is_false_by_default(self):
         self.assertFalse(self.recipe.is_published)
+
+    def test_recipe_string_representation_is_correct(self):
+        desired_title = 'Testing representation'
+        self.recipe.title = desired_title
+        self.recipe.full_clean()
+        self.recipe.save()
+        self.assertEqual(str(self.recipe), desired_title)
