@@ -21,8 +21,7 @@ class RecipeViewsTest(RecipeTestBase):
         )
 
     def test_recipe_home_template_loads_recipes(self):
-        self.make_recipe()
-
+        self.make_recipe(is_published=True)
         response = self.client.get(
             reverse(
                 'recipes:home',
@@ -48,7 +47,7 @@ class RecipeViewsTest(RecipeTestBase):
     # Category related tests
     def test_recipe_category_template_loads_recipes(self):
         desired_title = 'This is a category test'
-        self.make_recipe(title=desired_title)
+        self.make_recipe(title=desired_title, is_published=True)
 
         response = self.client.get(
             reverse('recipes:category', kwargs={'category_id': 1})
@@ -65,10 +64,7 @@ class RecipeViewsTest(RecipeTestBase):
         self.make_recipe(is_published=False)
 
         response = self.client.get(
-            reverse(
-                'recipes:category',
-                kwargs={'category_id': 1}
-            )
+            reverse('recipes:category', kwargs={'category_id': 1})
         )
 
         self.assertEqual(response.status_code, 404)
@@ -80,7 +76,7 @@ class RecipeViewsTest(RecipeTestBase):
 
     def test_recipe_detail_template_loads_correct_recipe(self):
         desired_title = 'This is a detail page - It loads only one recipe'
-        self.make_recipe(title=desired_title)
+        self.make_recipe(title=desired_title, is_published=True)
 
         response = self.client.get(reverse('recipes:recipe', kwargs={'id': 1}))
         content = response.content.decode('utf-8')
@@ -90,11 +86,6 @@ class RecipeViewsTest(RecipeTestBase):
     def test_recipe_detail_template_doesnt_load_non_published_recipe(self):
         self.make_recipe(is_published=False)
 
-        response = self.client.get(
-            reverse(
-                'recipes:recipe',
-                kwargs={'id': 1}
-            )
-        )
+        response = self.client.get(reverse('recipes:recipe', kwargs={'id': 1}))
 
         self.assertEqual(response.status_code, 404)
