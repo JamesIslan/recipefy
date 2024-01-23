@@ -21,7 +21,7 @@ class ViewsTest(RecipeTestBase):
             response_content,
         )
 
-    def test_home_template_loads_recipes(self):
+    def test_home_template_uses_recipes_template(self):
         self.make_recipe(is_published=True)
         response = self.client.get(
             reverse(
@@ -90,3 +90,9 @@ class ViewsTest(RecipeTestBase):
         response = self.client.get(reverse('recipes:recipe', kwargs={'id': 1}))
 
         self.assertEqual(response.status_code, 404)
+
+    # Search related tests
+    def test_search_uses_correct_view_function(self):
+        url = reverse('recipes:search')
+        resolved = resolve(url)
+        self.assertIs(resolved.func, views.search)
