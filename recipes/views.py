@@ -47,9 +47,16 @@ def recipe(request, id):
 
 
 def search(request):
-    query_string = request.GET.get('q')
+    query_string = request.GET.get('q', '').strip()
 
     if not query_string:
         raise Http404()
 
-    return render(request, 'recipes/pages/search.html')
+    return render(
+        request,
+        'recipes/pages/search.html',
+        context={
+            'page_title': f'Resultados da busca por "{query_string}" | ',
+            'query_string': query_string,
+        },
+    )

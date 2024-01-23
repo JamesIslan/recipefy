@@ -49,8 +49,11 @@ html {
 }
 
 body {
+  position: relative;
+  min-height: 100vh;
   background: var(--color-gray-1);
   font-size: 1.6rem;
+  padding-bottom: 10rem;
   font-family: var(--font-primary);
   color: var(--color-dark-text);
 }
@@ -190,7 +193,7 @@ a {
   & a {
     color: var(--color-primary);
     transition: color 0.2s ease-in-out;
-    
+
     &:hover {
       color: var(--color-primary-dark);
     }
@@ -209,11 +212,19 @@ a {
 }
 
 .recipe-preparation {
-  & h1, h2, h3, h4, h5, h6, p, pre {
+  & h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  pre {
     margin: 2rem 0;
   }
-  
-  & ol, ul {
+
+  & ol,
+  ul {
     margin: 2rem;
     padding: 0 2rem;
   }
@@ -259,6 +270,9 @@ a {
   display: flex;
   justify-content: space-between;
   flex-flow: row nowrap;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
   padding: var(--spacing-gutter-medium) var(--spacing-gutter-large);
   font-size: 2rem;
   background-color: var(--color-primary-dark);
