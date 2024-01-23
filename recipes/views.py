@@ -1,8 +1,7 @@
-# from django.http import HttpResponse  # Temporary
+from django.http import Http404
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 
 from recipes.models import Category, Recipe
-from utils.recipes.dummy import make_recipe
 
 
 def home(request):
@@ -45,3 +44,12 @@ def recipe(request, id):
         'recipes/pages/recipe-view.html',
         context={'recipe': recipe, 'is_detail_page': True},
     )
+
+
+def search(request):
+    query_string = request.GET.get('q')
+
+    if not query_string:
+        raise Http404()
+
+    return render(request, 'recipes/pages/search.html')
