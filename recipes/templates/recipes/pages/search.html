@@ -3,4 +3,11 @@
   {{ page_title }}
 {% endblock title %}
 {% block content %}
+  <div class="container-recipes-grid container">
+    {% for recipe in search_result %}
+      {% include 'recipes/partials/recipe.html' %}
+    {% empty %}
+      <h1 style="text-align: center;">Não há receitas cadastradas!</h1>
+    {% endfor %}
+  </div>
 {% endblock content %}
