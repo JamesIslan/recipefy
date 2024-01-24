@@ -1,11 +1,12 @@
 from django.core.exceptions import ValidationError
+from django.test import TestCase
 
-from .test_base import RecipeTestBase
+from .conftest import CategoryFactory
 
 
-class CategoryModelTest(RecipeTestBase):
+class CategoryModelTest(TestCase):
     def setUp(self) -> None:
-        self.category = self.make_category()
+        self.category = CategoryFactory()
         return super().setUp()
 
     def test_category_model_string_representation_is_correct(self):
@@ -13,5 +14,6 @@ class CategoryModelTest(RecipeTestBase):
 
     def test_category_model_name_max_length_is_65_chars(self):
         self.category.name = 'A' * 66
+
         with self.assertRaises(ValidationError):
-            self.category.full_clean()
+            self.category.full_clean()  # type: ignore

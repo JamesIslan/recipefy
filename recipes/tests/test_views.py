@@ -1,11 +1,12 @@
+from django.test import TestCase
 from django.urls import resolve, reverse
 
 from recipes import views
 
-from .test_base import RecipeTestBase
+from .conftest import RecipeFactory
 
 
-class ViewsTest(RecipeTestBase):
+class ViewsTest(TestCase):
     # Home related tests
     def test_home_view_function_is_correct(self):
         view = resolve(reverse('recipes:home'))
@@ -22,7 +23,7 @@ class ViewsTest(RecipeTestBase):
         )
 
     def test_home_template_uses_recipes_template(self):
-        self.make_recipe(is_published=True)
+        RecipeFactory(is_published=True)
         response = self.client.get(
             reverse(
                 'recipes:home',
@@ -35,7 +36,7 @@ class ViewsTest(RecipeTestBase):
         self.assertEqual(len(response_context_recipes), 1)
 
     def test_home_template_doesnt_load_non_published_recipes(self):
-        self.make_recipe(is_published=False)
+        RecipeFactory(is_published=False)
 
         response = self.client.get(reverse('recipes:home'))
         content = response.content.decode('utf-8')
@@ -48,7 +49,7 @@ class ViewsTest(RecipeTestBase):
     # Category related tests
     def test_category_template_loads_recipes(self):
         desired_title = 'This is a category test'
-        self.make_recipe(title=desired_title, is_published=True)
+        RecipeFactory(title=desired_title, is_published=True)
 
         response = self.client.get(
             reverse('recipes:category', kwargs={'category_id': 1})
@@ -62,12 +63,10 @@ class ViewsTest(RecipeTestBase):
         self.assertIs(view.func, views.category)
 
     def test_category_template_doesnt_load_non_existent_category(self):
-        self.make_recipe(is_published=False)
-
+        RecipeFactory(is_published=False)
         response = self.client.get(
             reverse('recipes:category', kwargs={'category_id': 1})
         )
-
         self.assertEqual(response.status_code, 404)
 
     # Detail related tests
@@ -77,7 +76,7 @@ class ViewsTest(RecipeTestBase):
 
     def test_detail_template_loads_correct_recipe(self):
         desired_title = 'This is a detail page - It loads only one recipe'
-        self.make_recipe(title=desired_title, is_published=True)
+        RecipeFactory(title=desired_title, is_published=True)
 
         response = self.client.get(reverse('recipes:recipe', kwargs={'id': 1}))
         content = response.content.decode('utf-8')
@@ -85,7 +84,7 @@ class ViewsTest(RecipeTestBase):
         self.assertIn(desired_title, content)
 
     def test_detail_template_doesnt_load_non_published_recipe(self):
-        self.make_recipe(is_published=False)
+        RecipeFactory(is_published=False)
 
         response = self.client.get(reverse('recipes:recipe', kwargs={'id': 1}))
 

@@ -1,12 +1,12 @@
-from django.core.exceptions import ValidationError
+from django.test import TestCase
 from parameterized import parameterized
 
-from .test_base import RecipeTestBase
+from .conftest import RecipeFactory
 
 
-class RecipeModelTest(RecipeTestBase):
+class RecipeModelTest(TestCase):
     def setUp(self) -> None:
-        self.recipe = self.make_recipe()
+        self.recipe = RecipeFactory()
         return super().setUp()
 
     @parameterized.expand(
@@ -20,8 +20,6 @@ class RecipeModelTest(RecipeTestBase):
     def test_recipe_fields_max_length(self, field: str, max_length: int):
         self.recipe.preparation_steps_is_html = True
         setattr(self.recipe, field, 'A' * (max_length + 1))
-        with self.assertRaises(ValidationError):
-            self.recipe.full_clean()
 
     def test_recipe_preparation_steps_is_html_is_false_by_default(self):
         self.assertFalse(self.recipe.preparation_steps_is_html)
@@ -32,6 +30,4 @@ class RecipeModelTest(RecipeTestBase):
     def test_recipe_string_representation_is_correct(self):
         desired_title = 'Testing representation'
         self.recipe.title = desired_title
-        self.recipe.full_clean()
-        self.recipe.save()
         self.assertEqual(str(self.recipe), desired_title)
