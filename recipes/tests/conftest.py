@@ -6,9 +6,6 @@ from recipes.models import Category, Recipe
 
 
 class UserFactory(DjangoModelFactory):
-    def __init__(self) -> None:
-        super().__init__()
-
     class Meta:
         model = User
 
@@ -20,9 +17,6 @@ class UserFactory(DjangoModelFactory):
 
 
 class CategoryFactory(DjangoModelFactory):
-    def __init__(self) -> None:
-        super().__init__()
-
     class Meta:
         model = Category
 
@@ -30,9 +24,6 @@ class CategoryFactory(DjangoModelFactory):
 
 
 class RecipeFactory(DjangoModelFactory):
-    def __init__(self) -> None:
-        super().__init__()
-
     class Meta:
         model = Recipe
 
