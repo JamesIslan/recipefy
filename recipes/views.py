@@ -1,7 +1,8 @@
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 
-from recipes.models import Category, Recipe
+from recipes.models import Recipe
 
 
 def home(request):
@@ -52,11 +53,17 @@ def search(request):
     if not query_string:
         raise Http404()
 
+    search_result = Recipe.objects.filter(
+        Q(Q(title__icontains=query_string) | Q(description__icontains=query_string))
+        & Q(is_published=True),
+    ).order_by('-id')
+
     return render(
         request,
         'recipes/pages/search.html',
         context={
             'page_title': f'Resultados da busca por "{query_string}" | ',
             'query_string': query_string,
+            'search_result': search_result,
         },
     )
