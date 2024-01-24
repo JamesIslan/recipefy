@@ -72,6 +72,12 @@ a {
   color: inherit;
 }
 
+.recipe-img {
+  width: 100%;
+  max-height: 22rem;
+  object-fit: cover;
+}
+
 .container {
   max-width: 144rem;
   margin: 0 auto;
@@ -160,6 +166,7 @@ a {
   flex-flow: column nowrap;
   transition: all 0.3s ease-in-out;
   max-width: 64rem;
+  margin: 0 auto;
 
   &:hover {
     transform: scale(1.03);
