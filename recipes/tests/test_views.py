@@ -3,7 +3,7 @@ from django.urls import resolve, reverse
 
 from recipes import views
 
-from .conftest import RecipeFactory
+from .conftest import RecipeFactory, UserFactory
 
 
 class ViewsTest(TestCase):
@@ -95,3 +95,33 @@ class ViewsTest(TestCase):
         url = reverse('recipes:search')
         resolved = resolve(url)
         self.assertIs(resolved.func, views.search)
+
+    def test_search_can_find_recipe_by_title(self):
+        title1 = 'This is recipe one'
+        title2 = 'This is recipe two'
+
+        recipe1 = RecipeFactory(
+            slug='one',
+            title=title1,
+            author=UserFactory(username='james'),
+            is_published=True,
+        )
+
+        recipe2 = RecipeFactory(
+            slug='two',
+            title=title2,
+            author=UserFactory(username='james2'),
+            is_published=True,
+        )
+        search_url = reverse('recipes:search')
+        response1 = self.client.get(f'{search_url}?q={title1}')
+        response2 = self.client.get(f'{search_url}?q={title2}')
+        response_both = self.client.get(f'{search_url}?q=recipe')
+
+        self.assertIn(recipe1, response1.context['search_result'])
+        self.assertNotIn(recipe2, response1.context['search_result'])
+
+        self.assertIn(recipe2, response2.context['search_result'])
+        self.assertNotIn(recipe1, response2.context['search_result'])
+
+        self.assertIn(recipe1 and recipe2, response_both.context['search_result'])
