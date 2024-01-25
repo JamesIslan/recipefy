@@ -11,16 +11,13 @@ class ViewsTest(TestCase):
     def test_home_view_function_is_correct(self):
         view = resolve(reverse('recipes:home'))
         assert view.func is views.home
-        self.assertIs(view.func, views.home)
+        assert view.func is views.home
 
     def test_home_template_shows_no_recipes_found_if_no_recipes(self):
         response_content = self.client.get(reverse('recipes:home')).content.decode(
             'utf-8'
         )
-        self.assertIn(
-            'Não há receitas cadastradas!',
-            response_content,
-        )
+        assert 'Não há receitas cadastradas!' in response_content
 
     def test_home_template_uses_recipes_template(self):
         RecipeFactory(is_published=True)
@@ -32,8 +29,8 @@ class ViewsTest(TestCase):
         content = response.content.decode('utf-8')
         response_context_recipes = response.context['recipes']
 
-        self.assertIn('Uma receita genérica', content)
-        self.assertEqual(len(response_context_recipes), 1)
+        assert 'Uma receita genérica' in content
+        assert len(response_context_recipes) == 1
 
     def test_home_template_doesnt_load_non_published_recipes(self):
         RecipeFactory(is_published=False)
@@ -41,10 +38,7 @@ class ViewsTest(TestCase):
         response = self.client.get(reverse('recipes:home'))
         content = response.content.decode('utf-8')
 
-        self.assertIn(
-            'Não há receitas cadastradas!',
-            content,
-        )
+        assert 'Não há receitas cadastradas!' in content
 
     # Category related tests
     def test_category_template_loads_recipes(self):
@@ -56,23 +50,23 @@ class ViewsTest(TestCase):
         )
         content = response.content.decode('utf-8')
 
-        self.assertIn(desired_title, content)
+        assert desired_title in content
 
     def test_category_view_function_is_correct(self):
         view = resolve(reverse('recipes:category', kwargs={'category_id': 1}))
-        self.assertIs(view.func, views.category)
+        assert view.func is views.category
 
     def test_category_template_doesnt_load_non_existent_category(self):
         RecipeFactory(is_published=False)
         response = self.client.get(
             reverse('recipes:category', kwargs={'category_id': 1})
         )
-        self.assertEqual(response.status_code, 404)
+        assert response.status_code == 404
 
     # Detail related tests
     def test_detail_view_function_is_correct(self):
         view = resolve(reverse('recipes:recipe', kwargs={'id': 1}))
-        self.assertIs(view.func, views.recipe)
+        assert view.func is views.recipe
 
     def test_detail_template_loads_correct_recipe(self):
         desired_title = 'This is a detail page - It loads only one recipe'
@@ -81,20 +75,20 @@ class ViewsTest(TestCase):
         response = self.client.get(reverse('recipes:recipe', kwargs={'id': 1}))
         content = response.content.decode('utf-8')
 
-        self.assertIn(desired_title, content)
+        assert desired_title in content
 
     def test_detail_template_doesnt_load_non_published_recipe(self):
         RecipeFactory(is_published=False)
 
         response = self.client.get(reverse('recipes:recipe', kwargs={'id': 1}))
 
-        self.assertEqual(response.status_code, 404)
+        assert response.status_code == 404
 
     # Search related tests
     def test_search_uses_correct_view_function(self):
         url = reverse('recipes:search')
         resolved = resolve(url)
-        self.assertIs(resolved.func, views.search)
+        assert resolved.func is views.search
 
     def test_search_can_find_recipe_by_title(self):
         title1 = 'This is recipe one'
@@ -118,10 +112,10 @@ class ViewsTest(TestCase):
         response2 = self.client.get(f'{search_url}?q={title2}')
         response_both = self.client.get(f'{search_url}?q=recipe')
 
-        self.assertIn(recipe1, response1.context['search_result'])
-        self.assertNotIn(recipe2, response1.context['search_result'])
+        assert recipe1 in response1.context['search_result']
+        assert recipe2 not in response1.context['search_result']
 
-        self.assertIn(recipe2, response2.context['search_result'])
-        self.assertNotIn(recipe1, response2.context['search_result'])
+        assert recipe2 in response2.context['search_result']
+        assert recipe1 not in response2.context['search_result']
 
-        self.assertIn(recipe1 and recipe2, response_both.context['search_result'])
+        assert (recipe1 and recipe2) in response_both.context['search_result']

@@ -1,11 +1,14 @@
 from django.contrib.auth.models import User
 from factory import SubFactory
-from factory.django import DjangoModelFactory
+from factory.django import DjangoModelFactory, DjangoOptions
 
 from recipes.models import Category, Recipe
 
 
 class UserFactory(DjangoModelFactory):
+    def __new__(cls, *args, **kwargs):
+        return super().__new__(*args, **kwargs)
+
     class Meta:
         model = User
 
@@ -17,13 +20,20 @@ class UserFactory(DjangoModelFactory):
 
 
 class CategoryFactory(DjangoModelFactory):
+    def __new__(cls, *args, **kwargs):
+        return super().__new__(*args, **kwargs)
+
     class Meta:
         model = Category
 
     name = 'Categoria'
 
 
-class RecipeFactory(DjangoModelFactory):
+class RecipeFactory(DjangoModelFactory, DjangoOptions):
+    @classmethod
+    def create(cls, **kwargs):
+        return super().create(**kwargs)
+
     class Meta:
         model = Recipe
 
