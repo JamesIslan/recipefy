@@ -510,3 +510,4 @@ pip-selfcheck.json
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,pycharm,python,venv,git
 .vscode/settings.json
 .vscode/launch.json
+db.sqlite3.bak
