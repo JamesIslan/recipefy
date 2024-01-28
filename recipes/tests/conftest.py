@@ -1,10 +1,12 @@
 from django.contrib.auth.models import User
 from factory import SubFactory
 from factory.django import DjangoModelFactory
+from pytest_factoryboy import register as register_factory
 
 from recipes.models import Category, Recipe
 
 
+@register_factory
 class UserFactory(DjangoModelFactory):
     class Meta:
         model = User
@@ -16,6 +18,7 @@ class UserFactory(DjangoModelFactory):
     password = 'fulano123'
 
 
+@register_factory
 class CategoryFactory(DjangoModelFactory):
     class Meta:
         model = Category
@@ -23,6 +26,7 @@ class CategoryFactory(DjangoModelFactory):
     name = 'Categoria'
 
 
+@register_factory
 class RecipeFactory(DjangoModelFactory):
     class Meta:
         model = Recipe

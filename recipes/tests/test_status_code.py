@@ -1,8 +1,9 @@
 from django.test import TestCase
 from django.urls import reverse
+from pytest import mark
 
 
-class StatusCodeTest(TestCase):
+class TestStatusCode(TestCase):
     def test_home_response_raises_200_OK(self):
         response = self.client.get(reverse('recipes:home'))
         assert response.status_code == 200
