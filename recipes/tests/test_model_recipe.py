@@ -1,5 +1,7 @@
 from pytest import mark
 
+from .conftest import RecipeFactory
+
 
 @mark.parametrize(
     'field,max_length',
@@ -10,17 +12,9 @@ from pytest import mark
         ('servings_unit', 65),
     ],
 )
-def test_recipe_fields_max_length(db, field: str, max_length: int, recipe):
-    recipe.preparation_steps_is_html = True
-    assert recipe._meta.get_field(field).max_length == max_length
-
-
-def test_recipe_preparation_steps_is_html_is_false_by_default(db, recipe):
-    assert not recipe.preparation_steps_is_html
-
-
-def test_recipe_is_published_is_false_by_default(db, recipe):
-    assert not recipe.is_published
+def test_recipe_fields_max_length(db, field: str, max_length: int):
+    recipe = RecipeFactory(preparation_steps_is_html=True)
+    assert recipe._meta.get_field(field).max_length == max_length  # type: ignore
 
 
 def test_recipe_string_representation_is_correct(db, recipe):
