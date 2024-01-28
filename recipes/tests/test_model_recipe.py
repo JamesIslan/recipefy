@@ -19,7 +19,7 @@ class TestRecipeModel:
     def test_recipe_preparation_steps_is_html_is_false_by_default(self, recipe):
         assert not recipe.preparation_steps_is_html
 
-    def test_recipe_is_published_is_false_by_default(self, recipe):
+    def test_recipe_is_published_is_false_by_default(self, recipe, client):
         assert not recipe.is_published
 
     def test_recipe_string_representation_is_correct(self, recipe):
